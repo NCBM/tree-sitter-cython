@@ -6377,6 +6377,30 @@
               {
                 "type": "STRING",
                 "value": "operator"
+              },
+              {
+                "type": "STRING",
+                "value": "public"
+              },
+              {
+                "type": "STRING",
+                "value": "packed"
+              },
+              {
+                "type": "STRING",
+                "value": "inline"
+              },
+              {
+                "type": "STRING",
+                "value": "readonly"
+              },
+              {
+                "type": "STRING",
+                "value": "property"
+              },
+              {
+                "type": "STRING",
+                "value": "new"
               }
             ]
           },
@@ -10307,6 +10331,14 @@
     [
       "operator_name",
       "type_qualifier"
+    ],
+    [
+      "maybe_typed_name",
+      "storageclass"
+    ],
+    [
+      "cdef_definition_block",
+      "storageclass"
     ]
   ],
   "precedences": [],
