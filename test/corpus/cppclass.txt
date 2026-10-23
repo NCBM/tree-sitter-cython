@@ -1,0 +1,88 @@
+==================
+cppclass members
+==================
+
+cdef extern from "<vector>" namespace "std" nogil:
+    cdef cppclass vector[T,ALLOCATOR=*]:
+        ctypedef T value_type
+        iterator begin()
+        const_iterator cbegin()
+        T& operator[](size_type)
+        T& at(size_type) except +
+        bool operator bool()
+        void clear() const
+
+---
+
+(module
+  (cdef_statement
+    (extern_block
+      (string
+        (string_start)
+        (string_content)
+        (string_end))
+      (string
+        (string_start)
+        (string_content)
+        (string_end))
+      (extern_suite
+        (cdef_type_declaration
+          (ctype_declaration
+            (cppclass
+              (identifier)
+              (template_params
+                (template_param
+                  (identifier))
+                (template_param
+                  (identifier)
+                  (template_default)))
+              (ctypedef_statement
+                (cvar_decl
+                  (c_type
+                    type: (identifier))
+                  (identifier)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  (type_qualifier)
+                  name: (operator_name))
+                (c_function_definition
+                  (c_parameters
+                    (maybe_typed_name
+                      name: (identifier)))))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  (type_qualifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters
+                    (maybe_typed_name
+                      name: (identifier)))
+                  (exception_value)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (operator_name
+                    (identifier)))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)
+                  (const_method))))))))))

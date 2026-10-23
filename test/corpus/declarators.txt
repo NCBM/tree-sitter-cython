@@ -1,0 +1,95 @@
+==================
+declarator aliases
+==================
+
+cdef extern from "<vector>" namespace "std" nogil:
+    cdef cppclass vector[T]:
+        iterator begin()
+        const_iterator const_begin "begin"()
+        void assign[InputIt](InputIt, InputIt) except +
+
+---
+
+(module
+  (cdef_statement
+    (extern_block
+      (string (string_start) (string_content) (string_end))
+      (string (string_start) (string_content) (string_end))
+      (extern_suite
+        (cdef_type_declaration
+          (ctype_declaration
+            (cppclass
+              (identifier)
+              (template_params
+                (template_param (identifier)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier)
+                  alias: (string (string_start) (string_content) (string_end)))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (template_params
+                    (template_param (identifier)))
+                  (c_parameters
+                    (maybe_typed_name name: (identifier))
+                    (maybe_typed_name name: (identifier)))
+                  (exception_value))))))))))
+
+==================
+parenthesised pointer type
+==================
+
+cdef (PyObject*) type = NULL, value = NULL
+
+---
+
+(module
+  (cdef_statement
+    (cvar_def
+      (maybe_typed_name
+        type: (c_type
+          type: (identifier)
+          (type_qualifier))
+        name: (identifier))
+      (identifier)
+      (identifier)
+      (identifier))))
+
+==================
+function pointer type in template argument
+==================
+
+ctypedef stop_callback[void (*)() noexcept nogil] func_ptr_stop_callback "__pyx_cb"
+
+---
+
+(module
+  (ctypedef_statement
+    (cvar_decl
+      (c_type
+        type: (identifier)
+        (type_qualifier
+          (type_index
+            (c_function_argument_type
+              (c_type
+                type: (identifier))
+              (c_parameters)
+              (exception_value)
+              (gil_spec)))))
+      (identifier)
+      alias: (string
+        (string_start)
+        (string_content)
+        (string_end)))))

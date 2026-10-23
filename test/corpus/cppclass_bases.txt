@@ -1,0 +1,71 @@
+==================
+cppclass with bases and conversion operator
+==================
+
+cdef extern from "<x>" namespace "std" nogil:
+    cdef cppclass logic_error(exception):
+        bool operator bool()
+        T& get() const
+        void f() except +*
+        T& at(size_type) except +
+        const_iterator cbegin()
+        void g() noexcept
+
+---
+
+(module
+  (cdef_statement
+    (extern_block
+      (string (string_start) (string_content) (string_end))
+      (string (string_start) (string_content) (string_end))
+      (extern_suite
+        (cdef_type_declaration
+          (ctype_declaration
+            (cppclass
+              (identifier)
+              (cppclass_bases
+                (dotted_name (identifier)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (operator_name (identifier)))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  (type_qualifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)
+                  (const_method)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)
+                  (exception_value)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  (type_qualifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters
+                    (maybe_typed_name
+                      name: (identifier)))
+                  (exception_value)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)))
+              (cvar_def
+                (maybe_typed_name
+                  type: (identifier)
+                  name: (identifier))
+                (c_function_definition
+                  (c_parameters)
+                  (exception_value))))))))))

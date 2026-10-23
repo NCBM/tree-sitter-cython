@@ -1,0 +1,49 @@
+==================
+mixed parameter list
+==================
+
+def f(int a, list b not None, *args, **kwargs):
+    pass
+
+---
+
+(module
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (maybe_typed_name
+        type: (int_type)
+        name: (identifier))
+      (maybe_typed_name
+        type: (identifier)
+        name: (identifier))
+      (varargs_parameter
+        (identifier))
+      (kwargs_parameter
+        (identifier)))
+    body: (block
+      (pass_statement))))
+
+==================
+annotated variadic parameters
+==================
+
+def f(*args: int, **kwargs: str) -> None:
+    pass
+
+---
+
+(module
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (varargs_parameter
+        (identifier)
+        type: (identifier))
+      (kwargs_parameter
+        (identifier)
+        type: (identifier)))
+    return_type: (type
+      (none))
+    body: (block
+      (pass_statement))))
