@@ -1,0 +1,42 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "cython",
+      "camelcase": "Cython",
+      "title": "Cython",
+      "scope": "source.cython",
+      "file-types": [
+        "pxd",
+        "pyx",
+        "pxi"
+      ],
+      "injection-regex": "^cython$",
+      "class-name": "TreeSitterCython"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Cython syntax parser for TreeSitter",
+    "authors": [
+      {
+        "name": "NCBM",
+        "email": "worldmozara@163.com",
+        "url": "https://ncbm.one/"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/NCBM/tree-sitter-cython"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
