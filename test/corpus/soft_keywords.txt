@@ -1,0 +1,62 @@
+==================
+soft keywords as names
+==================
+
+type = 1
+type = type.base_type
+type(x).counter += 1
+
+
+def f(operator):
+    pass
+
+
+cdef type d_type
+cdef foo(operator, type, x)
+
+---
+
+(module
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (attribute
+        object: (identifier)
+        attribute: (identifier))))
+  (expression_statement
+    (augmented_assignment
+      left: (attribute
+        object: (call
+          function: (identifier)
+          arguments: (argument_list
+            (identifier)))
+        attribute: (identifier))
+      right: (integer)))
+  (function_definition
+    name: (identifier)
+    parameters: (parameters
+      (maybe_typed_name
+        name: (identifier)))
+    body: (block
+      (pass_statement)))
+  (cdef_statement
+    (cvar_def
+      (maybe_typed_name
+        type: (identifier)
+        name: (identifier))))
+  (cdef_statement
+    (cvar_def
+      (maybe_typed_name
+        name: (identifier))
+      (c_function_definition
+        (c_parameters
+          (maybe_typed_name
+            name: (identifier))
+          (maybe_typed_name
+            name: (identifier))
+          (maybe_typed_name
+            name: (identifier)))))))

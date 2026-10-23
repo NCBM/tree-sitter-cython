@@ -46,18 +46,7 @@ export default grammar(Python, {
   name: "cython",
 
   conflicts: ($, original) =>
-    original.filter((conflict) => {
-      const unnecessaryConflicts = [
-        ["match_statement", "primary_expression"],
-        ["type_alias_statement", "primary_expression"],
-      ];
-
-      return !unnecessaryConflicts.some(pair => (
-        conflict.length === 2
-        && ("name" in conflict[0] && conflict[0].name === pair[0])
-        && ("name" in conflict[1] && conflict[1].name === pair[1])
-      ));
-    }).concat([
+    original.concat([
       [$.maybe_typed_name],
       [$.c_name, $.cvar_decl],
       [$.c_type],
@@ -68,6 +57,10 @@ export default grammar(Python, {
       [$.varargs_parameter, $.type_qualifier],
       [$.kwargs_parameter, $.type_qualifier],
       [$.function_pointer_type, $.c_parameters],
+      // `operator` is both a C++ operator name and a legal parameter name;
+      // `operator ,` makes `cdef foo operator, x` genuinely ambiguous.
+      [$.operator_name, $.maybe_typed_name],
+      [$.operator_name, $.type_qualifier],
     ]),
 
   rules: {
@@ -415,9 +408,9 @@ export default grammar(Python, {
           "or",
           seq(choice("new", "delete"), optional("[]")),
           seq("\"\"", $.identifier),
-          // Cython allows conversion operators such as `operator bool`,
-          // i.e. any name that is not spelled with punctuation.
-          $.identifier,
+          // Cython only supports the conversion operator to `bool`, see
+          // `supported_overloaded_operators` in its parser.
+          alias("bool", $.identifier),
         ),
       ),
 
@@ -475,7 +468,7 @@ export default grammar(Python, {
           optional(choice("const", "volatile")),
           // Cython's grammar for `maybe_typed_name` allows a parenthesised
           // type here, which is how `cdef (PyObject*) x = NULL` parses.
-          field("type", choice($.identifier, $.int_type, seq("(", $.c_type, ")"))),
+          field("type", choice($.identifier, $.keyword_identifier, $.int_type, seq("(", $.c_type, ")"))),
           optional(seq(
             repeat(seq(
               ".",
@@ -484,13 +477,13 @@ export default grammar(Python, {
             optional("complex"),
             repeat($.type_qualifier),
           )),
-          field("name", optional(choice($.identifier, $.operator_name, $.c_function_pointer_name))),
+          field("name", optional(choice($.identifier, $.keyword_identifier, $.operator_name, $.c_function_pointer_name))),
           optional(field("alias", $.string)),
           repeat($.type_qualifier),
         ),
         seq(
           optional(choice("const", "volatile")),
-          field("name", choice($.identifier, $.operator_name)),
+          field("name", choice($.identifier, $.keyword_identifier, $.operator_name)),
           optional(field("alias", $.string)),
           repeat($.type_qualifier),
         ),
@@ -963,17 +956,23 @@ export default grammar(Python, {
         field("alternative", optional($.else_clause)),
       ),
     keyword_identifier: $ =>
-      prec(
-        PREC.keyword_identifier,
-        alias(
-          choice(
-            "print",
-            "exec",
-            "async",
-            "await",
-            "match",
-            "api",
+      choice(
+        prec(
+          PREC.keyword_identifier,
+          alias(
+            choice(
+              "print",
+              "exec",
+              "async",
+              "await",
+              "api",
+            ),
+            $.identifier,
           ),
+        ),
+        // Soft keywords: ordinary names unless they introduce a statement.
+        alias(
+          choice("type", "match", "operator"),
           $.identifier,
         ),
       ),
