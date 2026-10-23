@@ -6325,42 +6325,65 @@
       "value": "[_\\p{XID_Start}][_\\p{XID_Continue}]*"
     },
     "keyword_identifier": {
-      "type": "PREC",
-      "value": -3,
-      "content": {
-        "type": "ALIAS",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "print"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": -3,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "print"
+                },
+                {
+                  "type": "STRING",
+                  "value": "exec"
+                },
+                {
+                  "type": "STRING",
+                  "value": "async"
+                },
+                {
+                  "type": "STRING",
+                  "value": "await"
+                },
+                {
+                  "type": "STRING",
+                  "value": "api"
+                }
+              ]
             },
-            {
-              "type": "STRING",
-              "value": "exec"
-            },
-            {
-              "type": "STRING",
-              "value": "async"
-            },
-            {
-              "type": "STRING",
-              "value": "await"
-            },
-            {
-              "type": "STRING",
-              "value": "match"
-            },
-            {
-              "type": "STRING",
-              "value": "api"
-            }
-          ]
+            "named": true,
+            "value": "identifier"
+          }
         },
-        "named": true,
-        "value": "identifier"
-      }
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "type"
+              },
+              {
+                "type": "STRING",
+                "value": "match"
+              },
+              {
+                "type": "STRING",
+                "value": "operator"
+              }
+            ]
+          },
+          "named": true,
+          "value": "identifier"
+        }
+      ]
     },
     "true": {
       "type": "STRING",
@@ -7746,8 +7769,13 @@
               ]
             },
             {
-              "type": "SYMBOL",
-              "name": "identifier"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "bool"
+              },
+              "named": true,
+              "value": "identifier"
             }
           ]
         }
@@ -8081,6 +8109,10 @@
                   },
                   {
                     "type": "SYMBOL",
+                    "name": "keyword_identifier"
+                  },
+                  {
+                    "type": "SYMBOL",
                     "name": "int_type"
                   },
                   {
@@ -8166,6 +8198,10 @@
                       },
                       {
                         "type": "SYMBOL",
+                        "name": "keyword_identifier"
+                      },
+                      {
+                        "type": "SYMBOL",
                         "name": "operator_name"
                       },
                       {
@@ -8238,6 +8274,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "identifier"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "keyword_identifier"
                   },
                   {
                     "type": "SYMBOL",
@@ -10223,6 +10263,14 @@
       "primary_expression"
     ],
     [
+      "type_alias_statement",
+      "primary_expression"
+    ],
+    [
+      "match_statement",
+      "primary_expression"
+    ],
+    [
       "maybe_typed_name"
     ],
     [
@@ -10251,6 +10299,14 @@
     [
       "function_pointer_type",
       "c_parameters"
+    ],
+    [
+      "operator_name",
+      "maybe_typed_name"
+    ],
+    [
+      "operator_name",
+      "type_qualifier"
     ]
   ],
   "precedences": [],
