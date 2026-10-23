@@ -61,6 +61,9 @@ export default grammar(Python, {
       // `operator ,` makes `cdef foo operator, x` genuinely ambiguous.
       [$.operator_name, $.maybe_typed_name],
       [$.operator_name, $.type_qualifier],
+      // `cdef public x` is a storage class, but `public` is also a legal name.
+      [$.maybe_typed_name, $.storageclass],
+      [$.cdef_definition_block, $.storageclass],
     ]),
 
   rules: {
@@ -971,8 +974,21 @@ export default grammar(Python, {
           ),
         ),
         // Soft keywords: ordinary names unless they introduce a statement.
+        // `public`, `packed`, `inline`, `readonly` are Cython's storage
+        // classes and `property` starts a property block; all of them remain
+        // usable as plain Python names, as in Cython's own `PY_NAME`.
         alias(
-          choice("type", "match", "operator"),
+          choice(
+            "type",
+            "match",
+            "operator",
+            "public",
+            "packed",
+            "inline",
+            "readonly",
+            "property",
+            "new",
+          ),
           $.identifier,
         ),
       ),

@@ -5,6 +5,12 @@ soft keywords as names
 type = 1
 type = type.base_type
 type(x).counter += 1
+packed = 2
+inline = 3
+readonly = 4
+public = 5
+property = 6
+new = 7
 
 
 def f(operator):
@@ -13,6 +19,14 @@ def f(operator):
 
 cdef type d_type
 cdef foo(operator, type, x)
+cdef public int exposed
+cdef readonly int visible
+cdef inline int fast():
+    return 1
+
+
+cdef packed struct Point:
+    int x
 
 ---
 
@@ -35,6 +49,30 @@ cdef foo(operator, type, x)
           arguments: (argument_list
             (identifier)))
         attribute: (identifier))
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
       right: (integer)))
   (function_definition
     name: (identifier)
@@ -59,4 +97,38 @@ cdef foo(operator, type, x)
           (maybe_typed_name
             name: (identifier))
           (maybe_typed_name
-            name: (identifier)))))))
+            name: (identifier))))))
+  (cdef_statement
+    (cvar_def
+      (storageclass)
+      (maybe_typed_name
+        type: (int_type)
+        name: (identifier))))
+  (cdef_statement
+    (cvar_def
+      (storageclass)
+      (maybe_typed_name
+        type: (int_type)
+        name: (identifier))))
+  (cdef_statement
+    (cvar_def
+      (storageclass)
+      (maybe_typed_name
+        type: (int_type)
+        name: (identifier))
+      (c_function_definition
+        (c_parameters)
+        (block
+          (return_statement
+            (integer))))))
+  (cdef_statement
+    (cdef_type_declaration
+      (ctype_declaration
+        (struct
+          (storageclass)
+          (identifier)
+          (struct_suite
+            (cvar_decl
+              (c_type
+                (int_type))
+              (identifier))))))))
